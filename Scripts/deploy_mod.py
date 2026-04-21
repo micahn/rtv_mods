@@ -40,14 +40,13 @@ def main() -> int:
     if not rtv_path:
         print(f"Error: RTV_PATH is not set in {ENV_FILE}", file=sys.stderr)
         return 1
-    mod_dest_path = Path(rtv_path) / "mods"
-
+    mod_dest_path = Path(rtv_path) / "mods" 
     if len(sys.argv) != 2:
         print(f"Usage: {sys.argv[0]} <mod-folder-name>", file=sys.stderr)
         return 1
 
     mod_name = sys.argv[1].rstrip("/")
-    mod_dir = PROJECT_ROOT / mod_name
+    mod_dir = PROJECT_ROOT / "mods" / mod_name
     if not mod_dir.is_dir():
         print(f"Error: Folder '{mod_dir}' does not exist.", file=sys.stderr)
         return 1
@@ -56,6 +55,9 @@ def main() -> int:
     zip_path = build(mod_dir, Path(tempfile.gettempdir()), version_override=None)
     print(f"Created {zip_path}")
 
+    # Ensure destination exists
+    mod_dest_path.mkdir(parents=True, exist_ok=True)
+    
     print(f"Deploying to {mod_dest_path}...")
     subprocess.run(["rsync", "-av", str(zip_path), mod_dest_path], check=True)
     print("Deploy complete.")

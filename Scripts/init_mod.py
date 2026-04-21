@@ -55,7 +55,7 @@ def main():
         )
         sys.exit(1)
 
-    mod_dir = PROJECT_ROOT / name
+    mod_dir = PROJECT_ROOT / "mods" / name
     if mod_dir.exists():
         print(f"Error: '{mod_dir}' already exists.", file=sys.stderr)
         sys.exit(1)
